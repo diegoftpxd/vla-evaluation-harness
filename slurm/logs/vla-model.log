@@ -44,3 +44,9 @@ Florence2ForConditionalGeneration has generative capabilities, as `prepare_input
 2026-10-15 15:22:11,695 INFO     websockets.server: connection rejected (200 OK)
 2026-10-15 15:22:26,419 INFO     websockets.server: connection rejected (200 OK)
 2026-10-15 15:25:08,211 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:32:00,578 INFO     websockets.server: connection open
+2026-10-15 15:32:00,579 INFO     vla_eval.model_servers.serve: Client connected: session=3c11887b-ad66-41bd-a56c-2b2c0d3d5779
+2026-10-15 15:32:00,650 INFO     vla_eval.model_servers.serve: HELLO session=3c11887b client=0.8.0 server=0.8.1.dev1+g669c0b68e.d20261015
+2026-10-15 15:32:18,728 INFO     vla_eval.model_servers.serve: EPISODE_START session=9191d90f episode=5e838423
+2026-10-15 15:33:01,641 INFO     vla_eval.model_servers.serve: EPISODE_END session=3c11887b
+2026-10-15 15:33:01,931 INFO     vla_eval.model_servers.serve: Client disconnected: session=3c11887b msgs=77
