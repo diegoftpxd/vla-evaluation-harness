@@ -43,3 +43,4 @@ Florence2ForConditionalGeneration has generative capabilities, as `prepare_input
 2026-10-15 15:22:11,075 INFO     websockets.server: connection rejected (200 OK)
 2026-10-15 15:22:11,695 INFO     websockets.server: connection rejected (200 OK)
 2026-10-15 15:22:26,419 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:25:08,211 INFO     websockets.server: connection rejected (200 OK)
