@@ -25,7 +25,7 @@
 #SBATCH --partition=ialab-low-unlimit     # verifica con: sinfo -N -l
 #SBATCH --qos=debug                        # debug suele topar en 1h; para runs largos sube --time y cambia --qos
 #SBATCH --gres=gpu:1
-#SBATCH --nodelist=yodaxico
+#SBATCH --nodelist=ventress
 #SBATCH --output=slurm/logs/%x.log
 #SBATCH --time=1:00:00
 
@@ -63,19 +63,29 @@ cleanup() {
 trap cleanup EXIT
 
 # --- Esperar a que el server esté listo --------------------------------------
-# Hasta ~15 min, porque la 1ª vez descarga el checkpoint desde HuggingFace.
-echo "[$(date)] Esperando a que el server responda en http://localhost:$PORT/health ..."
-for i in $(seq 1 180); do
+# OJO: la PRIMERA vez esto tarda bastante. `uv run` instala todo el entorno del
+# script del modelo (torch ~873 MiB + transformers + deps) y luego baja el
+# checkpoint desde HuggingFace (varios GB). Todo queda cacheado en ~/.cache
+# (uv + huggingface), así que los arranques SIGUIENTES son de ~1-2 min.
+# Timeout del probe configurable con READY_TIMEOUT_S (default 50 min, cabe en la
+# QOS debug de 1h). Si se agota pero el proceso sigue vivo (típicamente aún
+# descargando), NO matamos el job: dejamos el server corriendo.
+READY_TIMEOUT_S="${READY_TIMEOUT_S:-3000}"
+echo "[$(date)] Esperando al server en http://localhost:$PORT/health (hasta ${READY_TIMEOUT_S}s)..."
+start=$(date +%s)
+while :; do
   if curl -s --max-time 2 "http://localhost:$PORT/health" >/dev/null; then
+    echo "[$(date)] Server listo."
     break
   fi
   if ! kill -0 "$SERVER_PID" 2>/dev/null; then
-    echo "[$(date)] ERROR: el model server murió durante el arranque."
+    echo "[$(date)] ERROR: el model server murió durante el arranque (revisa el log de arriba)."
     exit 1
   fi
-  if [ "$i" -eq 180 ]; then
-    echo "[$(date)] ERROR: timeout esperando al model server."
-    exit 1
+  if [ "$(( $(date +%s) - start ))" -ge "$READY_TIMEOUT_S" ]; then
+    echo "[$(date)] AVISO: no respondió en ${READY_TIMEOUT_S}s pero el proceso sigue vivo"
+    echo "         (probablemente aún descargando). Dejo el server corriendo; verifica /health."
+    break
   fi
   sleep 5
 done
