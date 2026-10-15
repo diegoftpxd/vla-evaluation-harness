@@ -206,7 +206,9 @@ def exec_child(cmd: list[str], stop: Any) -> int:
     # Restore the caller's handlers afterwards (library use).
     previous: dict[int, Any] = {}
     if threading.current_thread() is threading.main_thread():
-        for sig in (signal.SIGHUP, signal.SIGTERM):
+        # SIGHUP does not exist on Windows; install whatever the platform has.
+        sigs = [s for s in (getattr(signal, "SIGHUP", None), signal.SIGTERM) if s is not None]
+        for sig in sigs:
             previous[sig] = signal.signal(sig, _handle_signal)
 
     try:
@@ -297,6 +299,19 @@ def run_via_docker(
         Path(docker_config_path).unlink(missing_ok=True)
 
 
+def _docker_host_path(p: str) -> str:
+    """Host path for a ``-v`` bind mount.
+
+    Docker Desktop on Windows cannot parse backslash drive paths in ``-v`` and
+    silently bind-mounts a freshly created empty directory instead of the file,
+    so normalize to the forward-slash drive form (``C:\\Users\\x`` -> ``C:/Users/x``).
+    No-op on POSIX.
+    """
+    if os.name == "nt":
+        return Path(p).as_posix()
+    return p
+
+
 def build_docker_command(
     docker: str,
     config: dict[str, Any],
@@ -334,8 +349,8 @@ def build_docker_command(
         # host.docker.internal (point --server-url at ws://host.docker.internal:<port>).
         cmd += ["--network", network, "--add-host", "host.docker.internal:host-gateway"]
     cmd += [
-        "-v", f"{results_dir}:{CONTAINER_RESULTS}",
-        "-v", f"{config_path}:{CONTAINER_CONFIG}:ro",
+        "-v", f"{_docker_host_path(results_dir)}:{CONTAINER_RESULTS}",
+        "-v", f"{_docker_host_path(config_path)}:{CONTAINER_CONFIG}:ro",
     ]
     # fmt: on
     from vla_eval.render import normalize_render_mode
