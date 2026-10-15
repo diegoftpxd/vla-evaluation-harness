@@ -17,7 +17,9 @@ def load_config(path: str) -> dict[str, Any]:
     """
     from omegaconf import OmegaConf
 
-    with open(path) as f:
+    # Always UTF-8: YAML is UTF-8 by spec, and Windows' default (cp1252) chokes
+    # on non-ASCII content such as accented comments.
+    with open(path, encoding="utf-8") as f:
         raw = yaml.safe_load(f) or {}
 
     extends = raw.pop("extends", None)

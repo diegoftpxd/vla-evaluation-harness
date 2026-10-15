@@ -1,13 +1,13 @@
-# LIBERO-Spatial con MÁS episodios y VIDEO activado.
+# LIBERO-Spatial con MAS episodios y VIDEO activado.
 #
-# Episodios totales = episodes_per_task × nº de tareas.
+# Episodios totales = episodes_per_task x numero de tareas.
 #   - LIBERO-Spatial tiene 10 tareas.
-#   - Aquí: episodes_per_task=10, max_tasks=2  ->  20 episodios (arranque tratable con video).
-#   - Para la suite COMPLETA (10 tareas × 10 = 100 ep), borra la línea max_tasks.
-#   - Para la suite oficial (10 × 50 = 500 ep), sube episodes_per_task a 50 y borra max_tasks.
+#   - Aqui: episodes_per_task=10, max_tasks=2  ->  20 episodios (arranque tratable con video).
+#   - Para la suite COMPLETA (10 tareas x 10 = 100 ep), borra la linea max_tasks.
+#   - Para la suite oficial (10 x 50 = 500 ep), sube episodes_per_task a 50 y borra max_tasks.
 #
-# El video (un mp4 por episodio) se renderiza en la máquina del benchmark (tu GPU).
-# Grabar video ralentiza cada episodio; baja video_fps si quieres archivos más chicos.
+# El video (un mp4 por episodio) se renderiza en la maquina del benchmark (tu GPU).
+# Grabar video ralentiza cada episodio; baja video_fps si quieres archivos mas chicos.
 server:
   url: "ws://localhost:8000"   # el --server-url del script/ps1 lo sobreescribe
 
