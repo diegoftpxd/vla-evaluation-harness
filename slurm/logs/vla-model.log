@@ -1,0 +1,6 @@
+[Thu Oct 15 11:43:51 AM -03 2026] Nodo: yodaxico   Puerto: 8000   Config: configs/model_servers/xvla/libero.yaml
+NVIDIA GeForce GTX 1080 Ti, 11264 MiB
+[Thu Oct 15 11:43:51 AM -03 2026] Iniciando model server en 0.0.0.0:8000
+[Thu Oct 15 11:43:51 AM -03 2026] Esperando a que el server responda en http://localhost:8000/health ...
+2026-10-15 11:43:52 INFO     vla_eval.cli.main: Running: /home/diegoftpxd/.local/bin/uv run /mnt-homes/wapol/asoto/diegoftpxd/vla-evaluation-harness/src/vla_eval/model_servers/xvla.py --port=8000 --args.denoising_steps=10 --args.model_path=2toINF/X-VLA-Libero --args.benchmark_profile=libero --args.domain_id=3 --args.chunk_size=30 --address 0.0.0.0:8000
+Downloading torch (873.2MiB)

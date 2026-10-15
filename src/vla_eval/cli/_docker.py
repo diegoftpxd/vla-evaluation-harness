@@ -324,7 +324,16 @@ def build_docker_command(
     cmd: list[str] = [
         docker, "run", "--rm",
         "--name", container_name,
-        "--network", "host",
+    ]
+    network = (docker_cfg.network or "host").strip().lower()
+    if network in ("", "host"):
+        cmd += ["--network", "host"]
+    else:
+        # Docker Desktop (Windows/macOS): host networking can't reach the host's
+        # localhost, so use a bridge network and expose the host as
+        # host.docker.internal (point --server-url at ws://host.docker.internal:<port>).
+        cmd += ["--network", network, "--add-host", "host.docker.internal:host-gateway"]
+    cmd += [
         "-v", f"{results_dir}:{CONTAINER_RESULTS}",
         "-v", f"{config_path}:{CONTAINER_CONFIG}:ro",
     ]

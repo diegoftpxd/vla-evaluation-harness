@@ -9,6 +9,7 @@ JSON).
 from __future__ import annotations
 
 import logging
+import os
 import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -135,6 +136,11 @@ class DockerConfig:
             no flag (image-default user). ``"host"`` → ``$(id -u):$(id -g)``.
             ``"<uid>:<gid>"`` → explicit pin.
         runtime: ``"docker"`` (default) or ``"charliecloud"``; ``--runtime`` / ``$VLA_EVAL_RUNTIME`` override.
+        network: ``docker run --network`` for benchmark containers. ``None``/``"host"`` (default) uses host
+            networking so the container reaches a model server on the host at ``localhost``. Any other value
+            (e.g. ``"bridge"``) is passed through and the host is exposed as ``host.docker.internal`` — needed
+            on Docker Desktop (Windows/macOS), where host networking cannot reach the host's ``localhost``;
+            point ``--server-url`` at ``ws://host.docker.internal:<port>``. ``$VLA_EVAL_DOCKER_NETWORK`` overrides.
         shm_size: ``docker run --shm-size`` for ``render: cpu`` runs (default ``"16g"``): lavapipe keeps its
             device memory in files on ``/dev/shm``, and Docker's default is 64 MiB.
         build: Compose-style ``{context, dockerfile}`` (or a context string). ``image`` is the tag
@@ -149,6 +155,7 @@ class DockerConfig:
     gpus: str | None = None
     user: str | None = None
     runtime: str | None = None
+    network: str | None = None
     shm_size: str = "16g"
     build: BuildConfig | None = None
     charliecloud: CharliecloudConfig = field(default_factory=CharliecloudConfig)
@@ -167,6 +174,7 @@ class DockerConfig:
             gpus=data.get("gpus"),
             user=data.get("user") or None,
             runtime=data.get("runtime") or None,
+            network=data.get("network") or os.environ.get("VLA_EVAL_DOCKER_NETWORK") or None,
             shm_size=str(data.get("shm_size") or "16g"),
             build=build,
             charliecloud=charliecloud,
