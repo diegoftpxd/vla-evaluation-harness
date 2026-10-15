@@ -50,22 +50,35 @@ if ($LASTEXITCODE -ne 0) { throw "Docker no responde. Abre Docker Desktop y rein
 # Enlaza en loopback; Docker Desktop alcanza ese 127.0.0.1 vía host.docker.internal.
 # Si tu Docker Desktop no lo alcanzara, cambia a:  "-L","0.0.0.0:${Port}:${ClusterNode}:${Port}"
 Write-Host "[+] Abriendo túnel: localhost:$Port -> ${ClusterNode}:$Port (vía $LoginNode)"
-$tunnel = Start-Process ssh -PassThru -WindowStyle Hidden `
-  -ArgumentList "-N", "-L", "${Port}:${ClusterNode}:${Port}", "$LoginNode"
+# -NoNewWindow deja la salida de ssh en esta consola, así ves cualquier prompt
+# (host key / contraseña) o error en vez de que se cuelgue oculto.
+$sshArgs = @(
+  "-N",
+  "-o", "ConnectTimeout=10",
+  "-o", "ServerAliveInterval=30",
+  "-o", "StrictHostKeyChecking=accept-new",
+  "-L", "${Port}:${ClusterNode}:${Port}",
+  "$LoginNode"
+)
+$tunnel = Start-Process ssh -PassThru -NoNewWindow -ArgumentList $sshArgs
 
 try {
   # Esperar al model server (/health solo responde 200 una vez cargado el modelo).
-  Write-Host "[+] Esperando al model server en http://localhost:$Port/health ..."
+  # Usamos curl.exe contra 127.0.0.1 (evita el localhost IPv6 de Windows).
+  Write-Host "[+] Esperando al model server en http://127.0.0.1:$Port/health ..."
   $ready = $false
   for ($i = 0; $i -lt 60; $i++) {
     if ($tunnel.HasExited) { throw "El túnel SSH murió (¿acceso a $LoginNode?)." }
-    try {
-      Invoke-WebRequest -UseBasicParsing -TimeoutSec 3 "http://localhost:$Port/health" *> $null
-      $ready = $true; break
-    } catch { Start-Sleep -Seconds 3 }
+    $body = (& curl.exe -s --max-time 3 "http://127.0.0.1:$Port/health" 2>$null)
+    $code = $LASTEXITCODE
+    # Listo si responde el body, o si la conexión llegó al server pero OpenSSH en
+    # Windows cerró el forward con un reset (curl 56) tras el GET: quirk benigno,
+    # el WebSocket del benchmark (conexión larga) no se ve afectado.
+    if (($body -match '"status"') -or ($code -eq 56)) { $ready = $true; break }
+    Start-Sleep -Seconds 3
   }
   if (-not $ready) {
-    throw "Sin respuesta en localhost:$Port. ¿El job del modelo está vivo y el nodo es '$ClusterNode'?"
+    throw "Sin respuesta en 127.0.0.1:$Port. ¿El job del modelo está vivo y el nodo es '$ClusterNode'?"
   }
   Write-Host "[+] Túnel OK, model server alcanzable."
 

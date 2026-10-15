@@ -1,21 +1,21 @@
-[Thu Oct 15 12:57:42 PM -03 2026] Nodo: ventress   Puerto: 8000   Config: configs/model_servers/xvla/libero.yaml
+[Thu Oct 15 02:49:05 PM -03 2026] Nodo: ventress   Puerto: 8000   Config: configs/model_servers/xvla/libero.yaml
 NVIDIA GeForce RTX 2080 SUPER, 8192 MiB
-[Thu Oct 15 12:57:42 PM -03 2026] Iniciando model server en 0.0.0.0:8000
-[Thu Oct 15 12:57:42 PM -03 2026] Esperando al server en http://localhost:8000/health (hasta 3000s)...
-2026-10-15 12:57:46 INFO     vla_eval.cli.main: Running: /home/diegoftpxd/.local/bin/uv run /mnt-homes/wapol/asoto/diegoftpxd/vla-evaluation-harness/src/vla_eval/model_servers/xvla.py --port=8000 --args.denoising_steps=10 --args.model_path=2toINF/X-VLA-Libero --args.benchmark_profile=libero --args.domain_id=3 --args.chunk_size=30 --address 0.0.0.0:8000
-2026-10-15 12:58:06,775 INFO     __main__: Loading X-VLA from 2toINF/X-VLA-Libero
+[Thu Oct 15 02:49:05 PM -03 2026] Iniciando model server en 0.0.0.0:8000
+[Thu Oct 15 02:49:05 PM -03 2026] Esperando al server en http://localhost:8000/health (hasta 3000s)...
+2026-10-15 14:49:06 INFO     vla_eval.cli.main: Running: /home/diegoftpxd/.local/bin/uv run /mnt-homes/wapol/asoto/diegoftpxd/vla-evaluation-harness/src/vla_eval/model_servers/xvla.py --port=8000 --args.denoising_steps=10 --args.model_path=2toINF/X-VLA-Libero --args.benchmark_profile=libero --args.domain_id=3 --args.chunk_size=30 --address 0.0.0.0:8000
+2026-10-15 14:49:15,119 INFO     __main__: Loading X-VLA from 2toINF/X-VLA-Libero
 Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
 Florence2ForConditionalGeneration has generative capabilities, as `prepare_inputs_for_generation` is explicitly overwritten. However, it doesn't directly inherit from `GenerationMixin`. From 👉v4.50👈 onwards, `PreTrainedModel` will NOT inherit from `GenerationMixin`, and this model will lose the ability to call `generate` and other related functions.
   - If you're using `trust_remote_code=True`, you can get rid of this warning by loading the model with an auto class. See https://huggingface.co/docs/transformers/en/model_doc/auto#auto-classes
   - If you are the owner of the model architecture code, please modify your model class such that it inherits from `GenerationMixin` (after `PreTrainedModel`, otherwise you'll get an exception).
   - If you are not the owner of the model architecture class, please contact the model code owner to update it.
-2026-10-15 12:58:46,083 INFO     __main__: X-VLA model loaded on cuda:0 (float32, profile=libero)
-2026-10-15 12:58:46,084 INFO     vla_eval.model_servers.serve: Starting server on ws://0.0.0.0:8000
-2026-10-15 12:58:46,102 INFO     vla_eval.model_servers.serve: Starting model server on ws://0.0.0.0:8000
-2026-10-15 12:58:46,102 INFO     vla_eval.model_servers.serve: HTTP config endpoint at http://0.0.0.0:8000/config
-2026-10-15 12:58:46,103 INFO     websockets.server: server listening on 0.0.0.0:8000
-2026-10-15 12:58:47,618 INFO     websockets.server: connection rejected (200 OK)
-[Thu Oct 15 12:58:47 PM -03 2026] Server listo.
+2026-10-15 14:49:21,561 INFO     __main__: X-VLA model loaded on cuda:0 (float32, profile=libero)
+2026-10-15 14:49:21,561 INFO     vla_eval.model_servers.serve: Starting server on ws://0.0.0.0:8000
+2026-10-15 14:49:21,572 INFO     vla_eval.model_servers.serve: Starting model server on ws://0.0.0.0:8000
+2026-10-15 14:49:21,572 INFO     vla_eval.model_servers.serve: HTTP config endpoint at http://0.0.0.0:8000/config
+2026-10-15 14:49:21,573 INFO     websockets.server: server listening on 0.0.0.0:8000
+2026-10-15 14:49:25,695 INFO     websockets.server: connection rejected (200 OK)
+[Thu Oct 15 02:49:25 PM -03 2026] Server listo.
 
 ==================================================================
  MODEL SERVER LISTO  ->  ventress:8000
@@ -31,19 +31,15 @@ Florence2ForConditionalGeneration has generative capabilities, as `prepare_input
         PORT=8000 scripts/run_benchmark.sh
 
  Este job queda vivo sirviendo el modelo hasta que termine (--time)
- o lo canceles con:  scancel 32517
+ o lo canceles con:  scancel 32528
 ==================================================================
 
-[2026-10-15T13:00:09.492] error: *** JOB 32517 ON ventress CANCELLED AT 2026-10-15T13:00:09 DUE to SIGNAL Terminated ***
-[Thu Oct 15 01:00:09 PM -03 2026] Deteniendo model server (pid 1573977)
-
-------------------------------------------------------------------------
-[Slurm] Este trabajo (#32517) terminó SIN reporte de rendimiento por correo.
-Puedes recibir un correo con el uso de CPU, RAM y GPU de tus trabajos
-(y sugerencias para que esperen menos en cola) agregando esta línea
-en tu script de sbatch, junto a las líneas #SBATCH:
-
-    #SENDJOBREPORT
-
-Dudas: slurmjobs@cenia.cl
-------------------------------------------------------------------------
+2026-10-15 14:52:54,664 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:17:26,909 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:22:07,617 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:22:09,061 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:22:09,694 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:22:10,301 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:22:11,075 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:22:11,695 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:22:26,419 INFO     websockets.server: connection rejected (200 OK)
