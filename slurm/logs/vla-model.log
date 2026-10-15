@@ -50,3 +50,17 @@ Florence2ForConditionalGeneration has generative capabilities, as `prepare_input
 2026-10-15 15:32:18,728 INFO     vla_eval.model_servers.serve: EPISODE_START session=9191d90f episode=5e838423
 2026-10-15 15:33:01,641 INFO     vla_eval.model_servers.serve: EPISODE_END session=3c11887b
 2026-10-15 15:33:01,931 INFO     vla_eval.model_servers.serve: Client disconnected: session=3c11887b msgs=77
+2026-10-15 15:42:41,558 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:42:48,927 INFO     websockets.server: connection open
+2026-10-15 15:42:48,927 INFO     vla_eval.model_servers.serve: Client connected: session=4ceb32c1-8f66-4bf6-8e83-68b084a20be8
+2026-10-15 15:42:48,988 INFO     vla_eval.model_servers.serve: HELLO session=4ceb32c1 client=0.8.0 server=0.8.1.dev1+g669c0b68e.d20261015
+2026-10-15 15:43:07,957 INFO     vla_eval.model_servers.serve: EPISODE_START session=f3dd4cc2 episode=cbf26b05
+2026-10-15 15:43:52,331 INFO     vla_eval.model_servers.serve: EPISODE_END session=4ceb32c1
+2026-10-15 15:43:52,791 INFO     vla_eval.model_servers.serve: Client disconnected: session=4ceb32c1 msgs=78
+2026-10-15 15:44:10,079 INFO     websockets.server: connection rejected (200 OK)
+2026-10-15 15:44:15,138 INFO     websockets.server: connection open
+2026-10-15 15:44:15,138 INFO     vla_eval.model_servers.serve: Client connected: session=c8c33e76-3c9c-4dcb-87e5-8fcb5e14d045
+2026-10-15 15:44:15,326 INFO     vla_eval.model_servers.serve: HELLO session=c8c33e76 client=0.8.0 server=0.8.1.dev1+g669c0b68e.d20261015
+2026-10-15 15:44:34,228 INFO     vla_eval.model_servers.serve: EPISODE_START session=1ea80e03 episode=b20e068b
+2026-10-15 15:45:21,251 INFO     vla_eval.model_servers.serve: EPISODE_END session=c8c33e76
+2026-10-15 15:45:21,552 INFO     vla_eval.model_servers.serve: Client disconnected: session=c8c33e76 msgs=78
